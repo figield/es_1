@@ -1,3 +1,4 @@
+// aggregate - DDD - business invariants/rules
 module.exports = function card() {
 
     let limit;
@@ -17,6 +18,7 @@ module.exports = function card() {
     }
 
     return {
+        // command
         assignLimit(amount) {
             // business invariant
             if(limitAlreadyAssigned()) {

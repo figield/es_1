@@ -1,4 +1,5 @@
 const eventTracker = require("./eventTracker");
+const ClientError = require("./clientError");
 
 const LIMIT_ASSIGNED = 'LIMIT_ASSIGNED';
 const CARD_WITHDRAWN = 'CARD_WITHDRAWN';
@@ -50,7 +51,7 @@ module.exports = function cardModule(now) {
             apply,
             assignLimit(amount) {
                 if(limitAlreadyAssigned()) {
-                    throw new Error('Cannot assign limit for the second time');
+                    throw new ClientError('Cannot assign limit for the second time');
                 }
 
                 applyWithRecord({type: LIMIT_ASSIGNED, amount, card_id: id, date: now().toJSON()});
@@ -58,10 +59,10 @@ module.exports = function cardModule(now) {
             availableLimit,
             withdraw(amount) {
                 if(!limitAlreadyAssigned()) {
-                    throw new Error('No limit assigned');
+                    throw new ClientError('No limit assigned');
                 }
                 if (notEnoughMoney(amount)) {
-                    throw new Error('Not enough money');
+                    throw new ClientError('Not enough money');
                 }
 
                 applyWithRecord({type: CARD_WITHDRAWN, amount, card_id: id, date: now().toJSON()});

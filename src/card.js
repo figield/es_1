@@ -1,3 +1,5 @@
+const eventTracker = require("./eventTracker");
+
 const LIMIT_ASSIGNED = 'LIMIT_ASSIGNED';
 const CARD_WITHDRAWN = 'CARD_WITHDRAWN';
 const CARD_REPAID = 'CARD_REPAID';
@@ -10,7 +12,7 @@ module.exports = function cardModule(now) {
         }, card(id));
     }
     function card(id) {
-        let events = [];
+        let {applyWithRecord, ...tracker} = eventTracker(apply);
         let limit;
         let used = 0;
 
@@ -39,20 +41,13 @@ module.exports = function cardModule(now) {
             }
         }
 
-        // generic
-        function applyWithRecord(event) {
-            events.push(event);
-            return apply(event);
-        }
 
         return {
+            ...tracker,
             uuid() {
                 return id;
             },
             apply,
-            flushEvents() {
-                events = [];
-            }, // generic
             assignLimit(amount) {
                 if(limitAlreadyAssigned()) {
                     throw new Error('Cannot assign limit for the second time');
@@ -74,9 +69,6 @@ module.exports = function cardModule(now) {
             repay(amount) {
                 applyWithRecord({type: CARD_REPAID, amount, card_id: id, date: now().toJSON()});
             },
-            pendingEvents() {
-                return events;
-            }, // generic
         };
     }
     return {card, recreateFrom};

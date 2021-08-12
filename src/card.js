@@ -1,6 +1,7 @@
 const LIMIT_ASSIGNED = 'LIMIT_ASSIGNED';
 const CARD_WITHDRAWN = 'CARD_WITHDRAWN';
 const CARD_REPAID = 'CARD_REPAID';
+
 module.exports = function cardModule(now) {
     function recreateFrom(id, events) {
         return events.reduce((card, event) => {

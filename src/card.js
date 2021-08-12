@@ -1,5 +1,12 @@
 module.exports = function cardModule(now) {
-    return function card(card_id) {
+    // reduce over the list of historical events
+    function recreateFrom(card_id, events) {
+        return events.reduce((card, event) => {
+            card.apply(event);
+            return card;
+        }, card(card_id));
+    }
+    function card(card_id) {
 
         let limit;
         let used = 0;
@@ -18,7 +25,20 @@ module.exports = function cardModule(now) {
             return limit - used;
         }
 
+        function apply(event) {
+            if(event.type === 'LIMIT_ASSIGNED') {
+                limit = event.amount;
+            }
+            if(event.type === 'CARD_WITHDRAWN') {
+                used += event.amount;
+            }
+            if(event.type === 'CARD_REPAID') {
+                used -= event.amount;
+            }
+        }
+
         return {
+            apply,
             uuid() {
                 return card_id;
             },
@@ -50,4 +70,6 @@ module.exports = function cardModule(now) {
             },
         };
     }
+
+    return {card, recreateFrom};
 };

@@ -49,6 +49,9 @@ module.exports = function cardModule(now) {
                 return id;
             },
             apply,
+            flushEvents() {
+                events = [];
+            },
             assignLimit(amount) {
                 if(limitAlreadyAssigned()) {
                     throw new Error('Cannot assign limit for the second time');

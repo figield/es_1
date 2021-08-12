@@ -122,7 +122,7 @@ test("recreate card from events", function (t) {
     t.end();
 });
 
-test.skip("can flush events", function (t) {
+test("can flush events", function (t) {
     const c = card();
     c.assignLimit(150000);
     c.withdraw(100000);

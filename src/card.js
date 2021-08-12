@@ -39,6 +39,7 @@ module.exports = function cardModule(now) {
             }
         }
 
+        // generic
         function applyWithRecord(event) {
             events.push(event);
             return apply(event);
@@ -51,7 +52,7 @@ module.exports = function cardModule(now) {
             apply,
             flushEvents() {
                 events = [];
-            },
+            }, // generic
             assignLimit(amount) {
                 if(limitAlreadyAssigned()) {
                     throw new Error('Cannot assign limit for the second time');
@@ -75,7 +76,7 @@ module.exports = function cardModule(now) {
             },
             pendingEvents() {
                 return events;
-            },
+            }, // generic
         };
     }
     return {card, recreateFrom};

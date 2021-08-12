@@ -14,3 +14,5 @@ function eventTracker(apply) {
         }
     };
 }
+
+module.exports = eventTracker;

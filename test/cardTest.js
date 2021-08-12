@@ -61,3 +61,14 @@ test("can repay a card", function (t) {
 
     t.end();
 });
+
+test("can capture events", function (t) {
+    const c = card();
+    c.assignLimit(150000);
+    c.withdraw(100000);
+    c.repay(50000);
+
+    t.deepEqual(c.pendingEvents(), [{type: 'LIMIT_ASSIGNED', amount: 150000}, {type: 'CARD_WITHDRAWN', amount: 100000}, {type: 'CARD_REPAID', amount: 50000}]);
+
+    t.end();
+});

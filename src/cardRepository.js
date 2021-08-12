@@ -1,4 +1,4 @@
-module.exports = function mongoRepository(recreateFrom, es) {
+module.exports = function cardRepository(recreateFrom, es) {
     return {
         async save(card) {
             return new Promise(function (resolve, reject) {

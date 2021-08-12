@@ -1,7 +1,7 @@
 const test = require('tape');
 const card = require('../src/card');
 
-test.only("cannot assign limit for the second time", function (t) {
+test("cannot assign limit for the second time", function (t) {
     const c = card();
 
     c.assignLimit(100000);
